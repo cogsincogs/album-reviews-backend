@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx.conf.d/default.conf
+      - ./app:/usr/src/app
+  sql:
+    image: mysql:latest
+    env_file:
+      - .env
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
+  node:
+    build:
+      context: .
+      dockerfile: Node.Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./app:/usr/src/app
+
+volumes:
+  mysqldata: {}
