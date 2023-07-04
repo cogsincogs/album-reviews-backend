@@ -1,14 +1,7 @@
 version: '3'
 
 services:
-  sql:
-    image: mysql:latest
-    env_file:
-      - .env
-    volumes:
-      - mysqldata:/var/lib/mysql
-    ports:
-      - 3306:3306
+
   node:
     build:
       context: .
@@ -19,6 +12,3 @@ services:
       - ./app:/usr/src/app
     ports:
       - 8080:8080
-
-volumes:
-  mysqldata: {}
