@@ -1,8 +1,12 @@
 'use strict'
 
 const express = require('express')
+const session = require('express-session')
 const mongoose = require('mongoose')
+const passport = require('passport')
 require('dotenv').config()
+
+require('./auth')
 
 // Constants
 const PORT = 8080
@@ -20,28 +24,45 @@ async function main () {
     db.once('open', () => console.log('Connected to database'))
 }
 
+function isLoggedIn(req, res, next) {
+  req.user ? next() : res.sendStatus(401)
+}
+
 app.use(express.json())
+app.use(session({ secret: process.env.SESSION_SECRET }))
+app.use(passport.initialize())
+app.use(passport.session())
 
 const usersRouter = require('./routes/users.js')
 app.use('/user', usersRouter)
 
-const Cat = mongoose.model('Cat', { name: String })
-
 app.get('/', (req, res) => {
-  const kitty = new Cat({ name: 'Louis' })
-  kitty.save()
-
-  res.send(kitty)
+  res.send('<a href="/auth/google">Login with Google</a>')
 })
 
-app.get('/cats', (req, res) => {
-  Cat.find({ name: 'Louis' })
-    .then(cats => {
-      res.send(cats)
-    })
-    .catch(err => {
-      res.send('Error: ' + err)
-    })
+app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
+
+app.get('/auth/google/callback', passport.authenticate('google', {
+  successRedirect: '/protected',
+  failureRedirect: '/auth/failure'
+}))
+
+app.get('/protected', isLoggedIn, (req, res) => {
+  res.send(`Hello ${req.user.displayName}`)
+})
+
+app.get('/auth/failure', (req, res) => {
+  res.send('Something went wrong')
+})
+
+app.get('/logout', (req, res) => {
+  req.logout(err => {
+    if (err) {
+      return next(err)
+    }
+    req.session.destroy()
+    res.send('Goodbye!')
+  })
 })
 
 app.listen(PORT, HOST, () => {
