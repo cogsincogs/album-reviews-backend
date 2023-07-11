@@ -18,13 +18,13 @@ const app = express()
 
 main().catch(err => console.log(err))
 async function main () {
-    await mongoose.connect(URI, { useNewUrlParser: true })
-    const db = mongoose.connection
-    db.on('error', (error) => console.error(error))
-    db.once('open', () => console.log('Connected to database'))
+  await mongoose.connect(URI, { useNewUrlParser: true })
+  const db = mongoose.connection
+  db.on('error', error => console.error(error))
+  db.once('open', () => console.log('Connected to database'))
 }
 
-function isLoggedIn(req, res, next) {
+function isLoggedIn (req, res, next) {
   req.user ? next() : res.sendStatus(401)
 }
 
@@ -40,15 +40,25 @@ app.get('/', (req, res) => {
   res.send('<a href="/auth/google">Login with Google</a>')
 })
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['email', 'profile'],
+    accessType: 'offline' // This property is required for Google to provide a refresh token
+  })
+)
 
-app.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/protected',
-  failureRedirect: '/auth/failure'
-}))
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/auth/failure' }),
+  function(req, res) {
+    // Success
+    res.redirect('/protected')
+  }
+)
 
 app.get('/protected', isLoggedIn, (req, res) => {
-  res.send(`Hello ${req.user.displayName}`)
+  res.send(`Hello ${req.user.username}`)
 })
 
 app.get('/auth/failure', (req, res) => {
