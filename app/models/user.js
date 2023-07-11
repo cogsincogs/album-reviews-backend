@@ -1,15 +1,23 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true
   },
-  id: {
+  googleId: {
+    type: String,
+    required: true
+  },
+  thumbnail: {
     type: String,
     required: true
   },
   accessToken: {
+    type: String,
+    required: true
+  },
+  refreshToken: {
     type: String,
     required: true
   },

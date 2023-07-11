@@ -18,9 +18,11 @@ router.get('/:id', getUser, (req, res) => {
 // create one
 router.post('/', async (req, res) => {
   const user = new User({
-    name: req.body.name,
-    id: req.body.id,
-    accessToken: req.body.accessToken
+    username: req.body.username,
+    googleId: req.body.googleId,
+    thumbnail: req.body.thumbnail,
+    accessToken: req.body.accessToken,
+    refreshToken: req.body.refreshToken
   })
 
   try {
@@ -32,14 +34,20 @@ router.post('/', async (req, res) => {
 })
 // update one
 router.patch('/:id', getUser, async (req, res) => {
-    if (req.body.name != null) {
-        res.user.name = req.body.name
+    if (req.body.username != null) {
+        res.user.username = req.body.name
     }
-    if (req.body.id != null) {
-        res.user.id = req.body.id
+    if (req.body.googleId != null) {
+        res.user.googleId = req.body.googleId
+    }
+    if (req.body.thumbnail != null) {
+        res.user.thumbnail = req.body.thumbnail
     }
     if (req.body.accessToken != null) {
         res.user.accessToken = req.body.accessToken
+    }
+    if (req.body.refreshToken != null) {
+        res.user.refreshToken = req.body.refreshToken
     }
     try {
         const updatedUser = await res.user.save()
