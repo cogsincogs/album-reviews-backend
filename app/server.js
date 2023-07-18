@@ -4,6 +4,7 @@ const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const passport = require('passport')
+const cors = require('cors')
 require('dotenv').config()
 
 require('./auth')
@@ -15,6 +16,27 @@ const URI = process.env.ATLAS_URI
 
 // App
 const app = express()
+
+// CORS options
+const options = {
+  allowedHeaders: [
+    'X-ACCESS_TOKEN',
+    'Access-Control-Allow-Origin',
+    'Authorization',
+    'Origin',
+    'x-requested-with',
+    'Content-Type',
+    'Content-Range',
+    'Content-Disposition',
+    'Content-Description',
+],
+credentials: true,
+methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+origin: [
+    'http://localhost:3000',
+],
+preflightContinue: false,
+}
 
 main().catch(err => console.log(err))
 async function main () {
@@ -32,6 +54,7 @@ app.use(express.json())
 app.use(session({ secret: process.env.SESSION_SECRET }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(cors(options))
 
 const usersRouter = require('./routes/users.js')
 app.use('/user', usersRouter)
