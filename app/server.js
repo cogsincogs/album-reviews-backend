@@ -76,7 +76,7 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/auth/failure' }),
   function(req, res) {
     // Success
-    res.redirect('/protected')
+    res.redirect('http://localhost:3000/home')
   }
 )
 
