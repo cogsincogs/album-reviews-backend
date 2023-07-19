@@ -80,13 +80,25 @@ app.get('/auth/failure', (req, res) => {
   res.send('Something went wrong')
 })
 
+app.get('/user_data', (req, res) => {
+  if (req.user === undefined) {
+    // Not logged in
+    res.json("")
+  } else {
+    // Logged in
+    res.json({
+      user: req.user
+    })
+  }
+})
+
 app.get('/logout', (req, res) => {
   req.logout(err => {
     if (err) {
       return next(err)
     }
     req.session.destroy()
-    res.send('Goodbye!')
+    res.redirect('http://localhost:3000')
   })
 })
 
