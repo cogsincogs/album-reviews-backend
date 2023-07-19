@@ -46,10 +46,6 @@ async function main () {
   db.once('open', () => console.log('Connected to database'))
 }
 
-function isLoggedIn (req, res, next) {
-  req.user ? next() : res.sendStatus(401)
-}
-
 app.use(express.json())
 app.use(session({ secret: process.env.SESSION_SECRET }))
 app.use(passport.initialize())
@@ -79,10 +75,6 @@ app.get(
     res.redirect('http://localhost:3000/home')
   }
 )
-
-app.get('/protected', isLoggedIn, (req, res) => {
-  res.send(`Hello ${req.user.username}`)
-})
 
 app.get('/auth/failure', (req, res) => {
   res.send('Something went wrong')
