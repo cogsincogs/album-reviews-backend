@@ -5,6 +5,7 @@ const session = require('express-session')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const cors = require('cors')
+const User = require('./models/user')
 require('dotenv').config()
 
 require('./auth')
@@ -72,9 +73,14 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/auth/failure' }),
   function(req, res) {
     // Success
+    incrementLoginCount(req.user.id, req.user.loginCount)
     res.redirect('http://localhost:3000/home')
   }
 )
+
+async function incrementLoginCount(userId, count) {
+  await User.updateOne({ _id: userId }, { loginCount: count + 1 })
+}
 
 app.get('/auth/failure', (req, res) => {
   res.send('Something went wrong')
