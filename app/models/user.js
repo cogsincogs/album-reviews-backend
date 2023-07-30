@@ -1,3 +1,4 @@
+const { Int32 } = require('mongodb')
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
@@ -12,6 +13,14 @@ const userSchema = new mongoose.Schema({
   thumbnail: {
     type: String,
     required: true
+  },
+  loginCount: {
+    type: Number,
+    required: true
+  },
+  lastLogin: {
+    type: Date,
+    required: false
   },
   accessToken: {
     type: String,
