@@ -19,7 +19,7 @@ passport.use(new GoogleStrategy({
           googleId: profile.id,
           username: profile.displayName,
           thumbnail: profile._json.picture,
-          loginCount: 0,
+          loginCount: 1,
           accessToken: accessToken,
           refreshToken: refreshToken
         }).save().then(newUser => {

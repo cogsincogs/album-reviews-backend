@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     username: req.body.username,
     googleId: req.body.googleId,
     thumbnail: req.body.thumbnail,
-    loginCount: 0,
+    loginCount: 1,
     accessToken: req.body.accessToken,
     refreshToken: req.body.refreshToken
   })
