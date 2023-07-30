@@ -1,4 +1,3 @@
-const { Int32 } = require('mongodb')
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
@@ -17,6 +16,11 @@ const userSchema = new mongoose.Schema({
   loginCount: {
     type: Number,
     required: true
+  },
+  currentLoginDate: {
+    type: Date,
+    required: true,
+    default: Date.now()
   },
   lastLogin: {
     type: Date,
