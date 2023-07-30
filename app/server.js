@@ -74,12 +74,33 @@ app.get(
   function(req, res) {
     // Success
     incrementLoginCount(req.user.id, req.user.loginCount)
+    getLastLogin(req.user.id).then(res => console.log("Last login: " + res))
+    updateCurrentLoginDate(req.user.id)
     res.redirect('http://localhost:3000/home')
   }
 )
 
 async function incrementLoginCount(userId, count) {
   await User.updateOne({ _id: userId }, { loginCount: count + 1 })
+}
+
+async function getLastLogin(userId) {
+  const user = await User.findById(userId)
+  const lastLogin = user.lastLogin
+  if (lastLogin === undefined) return false
+  return lastLogin
+}
+
+async function updateLastLogin(userId) {
+  const user = await User.findById(userId)
+  const date = user.currentLoginDate
+  await User.updateOne({ _id: userId }, { lastLogin: date })
+}
+
+async function updateCurrentLoginDate(userId) {
+  const user = await User.findById(userId)
+  const date = Date.now()
+  await User.updateOne({ _id: userId }, { currentLoginDate: date })
 }
 
 app.get('/auth/failure', (req, res) => {
@@ -99,6 +120,12 @@ app.get('/user_data', (req, res) => {
 })
 
 app.get('/logout', (req, res) => {
+
+  // Don't try to update user if user is not logged in
+  if(req.user != undefined) {
+    updateLastLogin(req.user.id)
+  }
+
   req.logout(err => {
     if (err) {
       return next(err)
