@@ -35,7 +35,9 @@ passport.serializeUser(function(user, cb) {
     cb(null, {
       id: user._id,
       username: user.username,
-      thumbnail: user.thumbnail
+      thumbnail: user.thumbnail,
+      loginCount: user.loginCount,
+      lastLogin: user.lastLogin
     })
 })
 
