@@ -54,7 +54,9 @@ app.use(passport.session())
 app.use(cors(options))
 
 const usersRouter = require('./routes/users.js')
+const postsRouter = require('./routes/posts')
 app.use('/user', usersRouter)
+app.use('/posts', postsRouter)
 
 app.get('/', (req, res) => {
   res.send('<a href="/auth/google">Login with Google</a>')
