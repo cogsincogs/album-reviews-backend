@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  postsArray: {
+    type: Array,
+    required: true
+  },
   loginCount: {
     type: Number,
     required: true

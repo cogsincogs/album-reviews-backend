@@ -19,6 +19,7 @@ passport.use(new GoogleStrategy({
           googleId: profile.id,
           username: profile.displayName,
           thumbnail: profile._json.picture,
+          postsArray: [],
           loginCount: 1,
           accessToken: accessToken,
           refreshToken: refreshToken
