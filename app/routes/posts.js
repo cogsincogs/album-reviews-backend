@@ -6,7 +6,7 @@ const User = require('../models/user')
 router.get('/:userId', getUser, (req, res) => {
 
     // If no post index specified, return entire array
-    if (!req.body.postIndex) res.json(res.user.postsArray)
+    if (!req.body.postIndex) return res.json(res.user.postsArray)
 
     // If post index specified, return only the one post
     res.json(res.user.postsArray[req.body.postIndex])
@@ -53,7 +53,7 @@ router.patch('/:userId', getUser, async (req, res) => {
 // delete post
 router.delete('/:userId', getUser, async (req, res) => {
 
-    if (!req.body.postIndex) res.status(500).json({ message: "Invalid post index" })
+    if (!req.body.postIndex) return res.status(500).json({ message: "Invalid post index" })
 
     res.user.postsArray.splice(req.body.postIndex, 1)
 
