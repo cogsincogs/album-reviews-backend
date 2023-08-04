@@ -11,8 +11,10 @@ router.get('/:userId', getUser, (req, res) => {
     // If post index specified, return only the one post
     res.json(res.user.postsArray[req.body.postIndex])
 })
+
 // push new post to user's posts array
 router.post('/:userId', getUser, async (req, res) => {
+
   const newPost = {
     date: Date.now(),
     content: req.body.content
@@ -21,7 +23,6 @@ router.post('/:userId', getUser, async (req, res) => {
   res.user.postsArray.push(newPost)
 
   try {
-    const updatedUser = await res.user.save()
     res.status(201).json({ message: "Successfully posted",
                            userId: res.user._id,
                            post: newPost })
@@ -29,6 +30,7 @@ router.post('/:userId', getUser, async (req, res) => {
     res.status(400).json({ message: err.message })
   }
 })
+
 // edit post
 router.patch('/:userId', getUser, async (req, res) => {
     
