@@ -35,7 +35,7 @@ router.post('/:userId', getUser, async (req, res) => {
 // edit post
 router.patch('/:userId', getUser, async (req, res) => {
     
-    if (!req.body.postIndex) return res.status(500).json({ message: "Invalid post index" })
+    if (req.body.postIndex === null) return res.status(500).json({ message: "Invalid post index" })
 
     let postsArray = res.user.postsArray
     const updatedPost = {
