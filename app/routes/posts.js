@@ -23,6 +23,7 @@ router.post('/:userId', getUser, async (req, res) => {
   res.user.postsArray.push(newPost)
 
   try {
+    res.user.save()
     res.status(201).json({ message: "Successfully posted",
                            userId: res.user._id,
                            post: newPost })
