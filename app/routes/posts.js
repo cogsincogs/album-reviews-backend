@@ -6,10 +6,10 @@ const User = require('../models/user')
 router.get('/:userId', getUser, (req, res) => {
 
     // If no post index specified, return entire array
-    if (!req.body.postIndex) return res.json(res.user.postsArray)
+    if (!req.query.postIndex) return res.json(res.user.postsArray)
 
     // If post index specified, return only the one post
-    res.json(res.user.postsArray[req.body.postIndex])
+    res.json(res.user.postsArray[req.query.postIndex])
 })
 
 // push new post to user's posts array
