@@ -100,7 +100,6 @@ async function updateLastLogin(userId) {
 }
 
 async function updateCurrentLoginDate(userId) {
-  const user = await User.findById(userId)
   const date = Date.now()
   await User.updateOne({ _id: userId }, { currentLoginDate: date })
 }
