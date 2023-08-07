@@ -38,6 +38,7 @@ passport.serializeUser(function(user, cb) {
       username: user.username,
       thumbnail: user.thumbnail,
       loginCount: user.loginCount,
+      currentLoginDate: user.currentLoginDate,
       lastLogin: user.lastLogin
     })
 })
