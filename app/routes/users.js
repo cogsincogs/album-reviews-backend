@@ -19,6 +19,7 @@ router.get('/:id', getUser, (req, res) => {
 router.post('/', async (req, res) => {
   const user = new User({
     username: req.body.username,
+    firstname: req.body.firstname,
     googleId: req.body.googleId,
     thumbnail: req.body.thumbnail,
     postsArray: [],

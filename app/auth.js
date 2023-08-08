@@ -18,6 +18,7 @@ passport.use(new GoogleStrategy({
         new User({
           googleId: profile.id,
           username: profile.displayName,
+          firstname: profile._json.given_name,
           thumbnail: profile._json.picture,
           postsArray: [],
           loginCount: 1,
@@ -36,6 +37,7 @@ passport.serializeUser(function(user, cb) {
     cb(null, {
       id: user._id,
       username: user.username,
+      firstname: user.firstname,
       thumbnail: user.thumbnail,
       loginCount: user.loginCount,
       lastLogin: user.lastLogin
