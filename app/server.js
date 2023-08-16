@@ -14,6 +14,7 @@ require('./auth')
 const PORT = 8080
 const HOST = '0.0.0.0'
 const URI = process.env.ATLAS_URI
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 // App
 const app = express()
@@ -34,7 +35,7 @@ const options = {
 credentials: true,
 methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
 origin: [
-    'http://localhost:3000',
+    FRONTEND_URL,
 ],
 preflightContinue: false,
 }
@@ -77,7 +78,7 @@ app.get(
     // Success
     incrementLoginCount(req.user.id, req.user.loginCount)
     updateCurrentLoginDate(req.user.id)
-    res.redirect('http://localhost:3000/home')
+    res.redirect(FRONTEND_URL + '/home')
   }
 )
 
@@ -124,7 +125,7 @@ app.get('/logout', (req, res) => {
       return next(err)
     }
     req.session.destroy()
-    res.redirect('http://localhost:3000')
+    res.redirect(FRONTEND_URL)
   })
 })
 
