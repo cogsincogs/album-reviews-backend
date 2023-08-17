@@ -12,3 +12,4 @@ services:
       - ./app:/usr/src/app
     ports:
       - 8080:8080
+    image: jwthomas/album-reviews-node:latest
